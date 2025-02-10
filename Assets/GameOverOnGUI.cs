@@ -56,11 +56,19 @@ public class GameOverOnGUI : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void RestartGame()
+public void RestartGame()
+{
+    Time.timeScale = 1f;
+    
+    // Reset the score when restarting
+    ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+    if (scoreManager != null)
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        scoreManager.score = 0;
     }
+
+    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+}
 
     // Helper method to create a single-color texture for the button background
     private Texture2D CreateColorTexture(Color color)
