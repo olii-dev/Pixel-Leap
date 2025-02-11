@@ -3,19 +3,25 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     public int score = 0;
-    public int highScore = 0;
+    private int highScore = 0;
     public GUIStyle scoreStyle;
-    [SerializeField] private Font font; // Allows font selection in Inspector
+    public GUIStyle highScoreStyle;
+    public Font customFont;
 
     private void Start()
     {
+        // Load high score
         highScore = PlayerPrefs.GetInt("HighScore", 0);
-        InvokeRepeating("IncreaseScore", 1f, 0.3f); // Increase score every 0.3 seconds
+
+        // Start increasing score every 0.3 seconds
+        InvokeRepeating("IncreaseScore", 1f, 0.3f);
     }
 
     void IncreaseScore()
     {
         score += 1;
+
+        // Update high score if necessary
         if (score > highScore)
         {
             highScore = score;
@@ -26,16 +32,29 @@ public class ScoreManager : MonoBehaviour
 
     void OnGUI()
     {
-        scoreStyle = new GUIStyle(GUI.skin.label);
-        scoreStyle.fontSize = 40;
-        scoreStyle.normal.textColor = Color.white;
-
-        if (font != null) // Apply font if assigned
+        // Set up styles
+        scoreStyle = new GUIStyle(GUI.skin.label)
         {
-            scoreStyle.font = font;
-        }
+            fontSize = 40,
+            font = customFont,
+            normal = { textColor = Color.white }
+        };
 
-        GUI.Label(new Rect(20, 20, 200, 50), "Score: " + score, scoreStyle);
-        GUI.Label(new Rect(20, 70, 200, 50), "High Score: " + highScore, scoreStyle);
+        highScoreStyle = new GUIStyle(scoreStyle)
+        {
+            fontSize = 30
+        };
+
+        // Draw score (left side)
+        GUI.Label(new Rect(20, 20, 300, 50), "Score: " + score, scoreStyle);
+
+        // Draw high score (right side)
+        GUI.Label(new Rect(Screen.width - 220, 20, 200, 50), "High Score: " + highScore, highScoreStyle);
+    }
+
+    // Reset score
+    public void ResetScore()
+    {
+        score = 0;
     }
 }
