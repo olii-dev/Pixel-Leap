@@ -42,17 +42,18 @@ public class ScoreManager : MonoBehaviour
 
         highScoreStyle = new GUIStyle(scoreStyle)
         {
-            fontSize = 30
+            fontSize = 30,  // Slightly smaller font
+            alignment = TextAnchor.UpperRight  // Align to the right
         };
 
-        // Draw score (left side)
+        // Draw current score (left side)
         GUI.Label(new Rect(20, 20, 300, 50), "Score: " + score, scoreStyle);
 
-        // Draw high score (right side)
-        GUI.Label(new Rect(Screen.width - 220, 20, 200, 50), "High Score: " + highScore, highScoreStyle);
+        // Draw high score (right side, always visible)
+        GUI.Label(new Rect(Screen.width - 250, 20, 230, 50), "High: " + highScore, highScoreStyle);
     }
 
-    // Reset score
+    // Reset score when restarting
     public void ResetScore()
     {
         score = 0;

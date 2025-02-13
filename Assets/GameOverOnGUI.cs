@@ -7,63 +7,48 @@ public class GameOverOnGUI : MonoBehaviour
     public int fontSize = 40;
     [SerializeField] private Font Font;
 
-void OnGUI()
-{
-    if (gameOver)
+    void OnGUI()
     {
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
-
-        // Create the style for the "Game Over" text
-        GUIStyle titleStyle = new GUIStyle
+        if (gameOver)
         {
-            alignment = TextAnchor.MiddleCenter,
-            fontSize = fontSize,
-            fontStyle = FontStyle.Bold,
-            font = Font,
-            normal = { textColor = Color.white }
-        };
+            int screenWidth = Screen.width;
+            int screenHeight = Screen.height;
 
-        // Draw "Game Over" text
-        Rect titleRect = new Rect(screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 200);
-        GUI.Label(titleRect, "Game Over", titleStyle);
+            GUIStyle titleStyle = new GUIStyle
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = fontSize,
+                fontStyle = FontStyle.Bold,
+                font = Font,
+                normal = { textColor = Color.white }
+            };
 
-        // Display the high score at the right side of the screen
-        GUIStyle highScoreStyle = new GUIStyle
-        {
-            alignment = TextAnchor.MiddleRight,
-            fontSize = 30,
-            fontStyle = FontStyle.Bold,
-            font = Font,
-            normal = { textColor = Color.yellow }  // You can change the color here
-        };
+            // "Game Over" text
+            Rect titleRect = new Rect(screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 200);
+            GUI.Label(titleRect, "Game Over", titleStyle);
 
-        // Define the position for the high score (right side of the screen)
-        Rect highScoreRect = new Rect(screenWidth - 250, 50, 200, 50); // Adjusted position
-        GUI.Label(highScoreRect, "High: " + PlayerPrefs.GetInt("HighScore", 0), highScoreStyle);
+            // Restart button
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 18,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.2f, 0.8f)) },
+                hover = { textColor = Color.white, background = CreateColorTexture(new Color(0.2f, 0.4f, 1f)) },
+                active = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.3f, 0.9f)) },
+                alignment = TextAnchor.MiddleCenter,
+                font = Font
+            };
 
-        // Draw restart button
-        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
-        {
-            fontSize = 18,
-            fontStyle = FontStyle.Bold,
-            normal = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.2f, 0.8f)) }, // Light blue for normal
-            hover = { textColor = Color.white, background = CreateColorTexture(new Color(0.2f, 0.4f, 1f)) }, // Light blue hover
-            active = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.3f, 0.9f)) }, // Slightly darker blue on click
-            alignment = TextAnchor.MiddleCenter,
-            font = Font
-        };
+            buttonStyle.border = new RectOffset(10, 10, 10, 10);
+            buttonStyle.padding = new RectOffset(10, 10, 10, 10);
 
-        buttonStyle.border = new RectOffset(10, 10, 10, 10);
-        buttonStyle.padding = new RectOffset(10, 10, 10, 10);
-
-        Rect buttonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
-        if (GUI.Button(buttonRect, "Restart", buttonStyle))
-        {
-            RestartGame();
+            Rect buttonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
+            if (GUI.Button(buttonRect, "Restart", buttonStyle))
+            {
+                RestartGame();
+            }
         }
     }
-}
 
     public void ShowGameOver()
     {
@@ -75,7 +60,6 @@ void OnGUI()
     {
         Time.timeScale = 1f;
 
-        // Find ScoreManager and reset score if found
         ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
         {
@@ -89,7 +73,6 @@ void OnGUI()
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // Helper method to create a single-color texture for the button background
     private Texture2D CreateColorTexture(Color color)
     {
         Texture2D texture = new Texture2D(1, 1);
