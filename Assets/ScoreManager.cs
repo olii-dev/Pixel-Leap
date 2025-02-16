@@ -8,12 +8,13 @@ public class ScoreManager : MonoBehaviour
     public GUIStyle highScoreStyle;
     public Font customFont;
 
+    public float baseObstacleSpeed = 5f;
+    public float speedIncrease = 0.5f;
+    private int nextSpeedIncrease = 200;
+
     private void Start()
     {
-        // Load high score
         highScore = PlayerPrefs.GetInt("HighScore", 0);
-
-        // Start increasing score every 0.3 seconds
         InvokeRepeating("IncreaseScore", 1f, 0.3f);
     }
 
@@ -21,7 +22,12 @@ public class ScoreManager : MonoBehaviour
     {
         score += 1;
 
-        // Update high score if necessary
+        if (score >= nextSpeedIncrease)
+        {
+            baseObstacleSpeed += speedIncrease;
+            nextSpeedIncrease += 200;
+        }
+
         if (score > highScore)
         {
             highScore = score;
@@ -32,7 +38,6 @@ public class ScoreManager : MonoBehaviour
 
     void OnGUI()
     {
-        // Set up styles
         scoreStyle = new GUIStyle(GUI.skin.label)
         {
             fontSize = 40,
@@ -42,20 +47,18 @@ public class ScoreManager : MonoBehaviour
 
         highScoreStyle = new GUIStyle(scoreStyle)
         {
-            fontSize = 30,  // Slightly smaller font
-            alignment = TextAnchor.UpperRight  // Align to the right
+            fontSize = 30,
+            alignment = TextAnchor.UpperRight
         };
 
-        // Draw current score (left side)
         GUI.Label(new Rect(20, 20, 300, 50), "Score: " + score, scoreStyle);
-
-        // Draw high score (right side, always visible)
         GUI.Label(new Rect(Screen.width - 250, 20, 230, 50), "High: " + highScore, highScoreStyle);
     }
 
-    // Reset score when restarting
     public void ResetScore()
     {
         score = 0;
+        baseObstacleSpeed = 5f;
+        nextSpeedIncrease = 200;
     }
 }
