@@ -19,13 +19,25 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
+        // Randomize spawn position (X) within the given range
         float randomX = Random.Range(spawnXMin, spawnXMax);
         Vector3 spawnPosition = new Vector3(randomX, spawnY, 0);
 
+        // Instantiate the obstacle prefab
         GameObject obstacle = Instantiate(obstaclePrefab, spawnPosition, Quaternion.identity);
-        float currentSpeed = scoreManager != null ? scoreManager.baseObstacleSpeed : 5f;
-        obstacle.AddComponent<ObstacleMovement>().speed = currentSpeed;
 
+        // Determine current speed from ScoreManager (or use default of 5f)
+        float currentSpeed = scoreManager != null ? scoreManager.baseObstacleSpeed : 5f;
+
+        // Get or add ObstacleMovement component and set its speed
+        ObstacleMovement om = obstacle.GetComponent<ObstacleMovement>();
+        if (om == null)
+        {
+            om = obstacle.AddComponent<ObstacleMovement>();
+        }
+        om.speed = currentSpeed;
+
+        // Schedule the next obstacle spawn with a random delay
         float randomDelay = Random.Range(minSpawnTime, maxSpawnTime);
         Invoke("SpawnObstacle", randomDelay);
     }
