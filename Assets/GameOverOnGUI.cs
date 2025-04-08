@@ -25,7 +25,7 @@ public class GameOverOnGUI : MonoBehaviour
 
             // "Game Over" text
             Rect titleRect = new Rect(screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 200);
-            GUI.Label(titleRect, "Game Over", titleStyle);
+            GUI.Label(titleRect, "Game Over!", titleStyle);
 
             // Restart button
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
@@ -43,7 +43,7 @@ public class GameOverOnGUI : MonoBehaviour
             buttonStyle.padding = new RectOffset(10, 10, 10, 10);
 
             Rect buttonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
-            if (GUI.Button(buttonRect, "Restart", buttonStyle))
+            if (GUI.Button(buttonRect, "Play again", buttonStyle))
             {
                 RestartGame();
             }
