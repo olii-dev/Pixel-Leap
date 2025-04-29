@@ -6,6 +6,14 @@ public class GameOverOnGUI : MonoBehaviour
     public bool gameOver = false;
     public int fontSize = 40;
     [SerializeField] private Font Font;
+    [SerializeField] private AudioClip gameOverAudio; // Add this for the game over sound
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        // Initialize the AudioSource
+        audioSource = gameObject.AddComponent<AudioSource>();
+    }
 
     void OnGUI()
     {
@@ -42,10 +50,23 @@ public class GameOverOnGUI : MonoBehaviour
             buttonStyle.border = new RectOffset(10, 10, 10, 10);
             buttonStyle.padding = new RectOffset(10, 10, 10, 10);
 
-            Rect buttonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
-            if (GUI.Button(buttonRect, "Play again", buttonStyle))
+            // Play Again button
+            Rect playAgainButtonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
+            if (GUI.Button(playAgainButtonRect, "Play again", buttonStyle))
             {
                 RestartGame();
+            }
+
+            // Return to Main Menu button
+            GUIStyle smallButtonStyle = new GUIStyle(buttonStyle)
+            {
+                fontSize = 11 // Smaller font size for "Main Menu"
+            };
+
+            Rect mainMenuButtonRect = new Rect(screenWidth / 2 - 50, screenHeight / 2 + 120, 100, 40); // Adjusted size
+            if (GUI.Button(mainMenuButtonRect, "Main Menu", smallButtonStyle))
+            {
+                ReturnToMainMenu();
             }
         }
     }
@@ -54,6 +75,21 @@ public class GameOverOnGUI : MonoBehaviour
     {
         gameOver = true;
         Time.timeScale = 0f;
+
+        // Stop all other audio sources in the scene
+        AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource source in allAudioSources)
+        {
+            if (source != audioSource)
+            {
+                source.Stop();
+            }
+        }
+
+        if (gameOverAudio != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(gameOverAudio, 0.6f);
+        }
     }
 
     public void RestartGame()
@@ -63,7 +99,7 @@ public class GameOverOnGUI : MonoBehaviour
         ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
         if (scoreManager != null)
         {
-            scoreManager.ResetScore(); // Reset score on restart
+            scoreManager.ResetScore();
         }
         else
         {
@@ -71,6 +107,12 @@ public class GameOverOnGUI : MonoBehaviour
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Menu");
     }
 
     private Texture2D CreateColorTexture(Color color)
