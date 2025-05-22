@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d2612c08d62954bfdbfe07c01754ecce
+guid: 1e5a79251ac3f4f9c9532ed3944fe77f
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 40
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -116,23 +116,17 @@ TextureImporter:
       name: spike_0
       rect:
         serializedVersion: 2
-        x: 36
+        x: 39
         y: 63
-        width: 58
-        height: 51
+        width: 54
+        height: 50
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
-      outline:
-      - - {x: 27, y: -11.5}
-        - {x: 5, y: 24.5}
-        - {x: -3, y: 24.5}
-        - {x: -25, y: -10.5}
-        - {x: -27, y: -25.5}
-        - {x: 29, y: -25.5}
+      outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
       spriteID: 2ce7dc7a2d9d735e0800000000000000
       internalID: -1929834416523346238
@@ -144,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0237656e434f94677b7787137c731b30
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -153,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      spike_0: -1929834416523346238
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

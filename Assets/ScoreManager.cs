@@ -55,7 +55,7 @@ public class ScoreManager : MonoBehaviour
         // Set up style for high score (right side)
         highScoreStyle = new GUIStyle(scoreStyle)
         {
-            fontSize = 30,
+            fontSize = 40,
             alignment = TextAnchor.UpperRight
         };
 

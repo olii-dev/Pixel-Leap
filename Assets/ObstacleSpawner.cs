@@ -37,8 +37,12 @@ public class ObstacleSpawner : MonoBehaviour
         }
         om.speed = currentSpeed;
 
+        // Adjust spawn delay based on obstacle speed
+        float adjustedMinSpawnTime = Mathf.Max(0.5f, minSpawnTime / (currentSpeed / 5f));
+        float adjustedMaxSpawnTime = Mathf.Max(1f, maxSpawnTime / (currentSpeed / 5f));
+
         // Schedule the next obstacle spawn with a random delay
-        float randomDelay = Random.Range(minSpawnTime, maxSpawnTime);
+        float randomDelay = Random.Range(adjustedMinSpawnTime, adjustedMaxSpawnTime);
         Invoke("SpawnObstacle", randomDelay);
     }
 }

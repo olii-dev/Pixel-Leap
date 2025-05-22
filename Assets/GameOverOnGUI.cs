@@ -15,61 +15,62 @@ public class GameOverOnGUI : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
     }
 
-    void OnGUI()
+void OnGUI()
+{
+    if (gameOver)
     {
-        if (gameOver)
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+
+        GUIStyle titleStyle = new GUIStyle
         {
-            int screenWidth = Screen.width;
-            int screenHeight = Screen.height;
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = fontSize,
+            fontStyle = FontStyle.Bold,
+            font = Font,
+            normal = { textColor = Color.white }
+        };
 
-            GUIStyle titleStyle = new GUIStyle
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = fontSize,
-                fontStyle = FontStyle.Bold,
-                font = Font,
-                normal = { textColor = Color.white }
-            };
+        // "Game Over" text
+        Rect titleRect = new Rect(screenWidth / 2 - 150, screenHeight / 2 - 150, 300, 200); // Moved higher by reducing y value
+        titleStyle.normal.textColor = Color.black; // Change text color to black
+        GUI.Label(titleRect, "Game Over!", titleStyle);
 
-            // "Game Over" text
-            Rect titleRect = new Rect(screenWidth / 2 - 150, screenHeight / 2 - 100, 300, 200);
-            GUI.Label(titleRect, "Game Over!", titleStyle);
+        // Restart button
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 18,
+            fontStyle = FontStyle.Bold,
+            normal = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.2f, 0.8f)) },
+            hover = { textColor = Color.white, background = CreateColorTexture(new Color(0.2f, 0.4f, 1f)) },
+            active = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.3f, 0.9f)) },
+            alignment = TextAnchor.MiddleCenter,
+            font = Font
+        };
 
-            // Restart button
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 18,
-                fontStyle = FontStyle.Bold,
-                normal = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.2f, 0.8f)) },
-                hover = { textColor = Color.white, background = CreateColorTexture(new Color(0.2f, 0.4f, 1f)) },
-                active = { textColor = Color.white, background = CreateColorTexture(new Color(0.1f, 0.3f, 0.9f)) },
-                alignment = TextAnchor.MiddleCenter,
-                font = Font
-            };
+        buttonStyle.border = new RectOffset(10, 10, 10, 10);
+        buttonStyle.padding = new RectOffset(10, 10, 10, 10);
 
-            buttonStyle.border = new RectOffset(10, 10, 10, 10);
-            buttonStyle.padding = new RectOffset(10, 10, 10, 10);
+        // Play Again button
+        Rect playAgainButtonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 20, 150, 50); // Moved higher by reducing y value
+        if (GUI.Button(playAgainButtonRect, "Play again", buttonStyle))
+        {
+            RestartGame();
+        }
 
-            // Play Again button
-            Rect playAgainButtonRect = new Rect(screenWidth / 2 - 75, screenHeight / 2 + 50, 150, 50);
-            if (GUI.Button(playAgainButtonRect, "Play again", buttonStyle))
-            {
-                RestartGame();
-            }
+        // Return to Main Menu button
+        GUIStyle smallButtonStyle = new GUIStyle(buttonStyle)
+        {
+            fontSize = 11 // Smaller font size for "Main Menu"
+        };
 
-            // Return to Main Menu button
-            GUIStyle smallButtonStyle = new GUIStyle(buttonStyle)
-            {
-                fontSize = 11 // Smaller font size for "Main Menu"
-            };
-
-            Rect mainMenuButtonRect = new Rect(screenWidth / 2 - 50, screenHeight / 2 + 120, 100, 40); // Adjusted size
-            if (GUI.Button(mainMenuButtonRect, "Main Menu", smallButtonStyle))
-            {
-                ReturnToMainMenu();
-            }
+        Rect mainMenuButtonRect = new Rect(screenWidth / 2 - 50, screenHeight / 2 + 90, 100, 40); // Moved higher by reducing y value
+        if (GUI.Button(mainMenuButtonRect, "Main Menu", smallButtonStyle))
+        {
+            ReturnToMainMenu();
         }
     }
+}
 
     public void ShowGameOver()
     {
